@@ -1,8 +1,8 @@
-# Astro Starter Kit: Basics
+# Astro architecture
 
 ## 🚀 Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
+The inside of the astro project from the root directory will look like this (folders and files):
 
 ```text
 /
