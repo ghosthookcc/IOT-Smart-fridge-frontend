@@ -9,13 +9,18 @@
     <h1>WebSocket Client</h1>
     <script>
         // Create a new WebSocket connection
-        const socket = new WebSocket('ws://localhost:12444');
+        const socket = new WebSocket('ws://localhost:13000');
 
         // Event handler for when the connection is established
         socket.onopen = function (event) {
             console.log('WebSocket is open now.'); // Log the connection status
             // Send a message to the server
-            socket.send("Hola Receiver!<END>");
+            const message = {
+                username : "mrgreen",
+                pincode : 9235,
+                data : "<TYPE=ping;>Hola Receiver!<END>",
+            }
+            socket.send(JSON.stringify(message));
         };
 
         // Event handler for when a message is received from the server
@@ -25,7 +30,7 @@
 
         // Event handler for when the connection is closed
         socket.onclose = function (event) {
-            console.log('WebSocket is closed now.'); // Log the connection close status
+            console.log('WebSocket is closed now with event ', event); // Log the connection close status
         };
 
         // Event handler for when there is an error with the WebSocket
