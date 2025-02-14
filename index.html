@@ -16,10 +16,11 @@
             console.log('WebSocket is open now.'); // Log the connection status
             // Send a message to the server
             const message = {
-                username : "mrgreen",
+                username : 'mrgreen',
                 pincode : 9235,
-                data : "<TYPE=ping;>Hola Receiver!<END>",
+                data : '<TYPE=ping;>Hola Receiver!<END>',
             }
+		console.log('Sending message to server:', message);
             socket.send(JSON.stringify(message));
         };
 
