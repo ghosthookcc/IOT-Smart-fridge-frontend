@@ -3,40 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Client</title>
+    <title>Smart Fridge Dashboard</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #0056b3;
+            border-radius: 15px 15px 0 0;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 20px;
+            border: 1px solid #007bff;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: #f9f9f9;
+        }
+        .left-side, .right-side {
+            flex: 0 0 48%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 150px;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .large-card {
+            flex: 1;
+        }
+        .half-card {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            width: 100%;
+        }
+        .half-card .card {
+            flex: 1;
+            min-height: 150px;
+            margin: 0 10px;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1em;
+            color: #666;
+        }
+        .status {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-    <h1>WebSocket Client</h1>
+    <header>
+        <h1>Smart Fridge Dashboard</h1>
+    </header>
+    <div class="container">
+        <div class="left-side">
+            <div class="card large-card">
+                <h2>Connections</h2>
+                <p>Details: <span id="connections" class="status">Loading...</span></p>
+            </div>
+            <div class="card">
+                <h2>Sensors</h2>
+                <p>Details: <span id="sensors" class="status">Loading...</span></p>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="half-card">
+                <div class="card" onclick="window.location.href='items.html'">
+                    <h2>Items</h2>
+                    <p>Details: <span id="items" class="status">Loading...</span></p>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Fridges</h2>
+                <p>Details: <span id="fridges" class="status">Loading...</span></p>
+            </div>
+            <div class="card">
+                <h2>Users</h2>
+                <p>Details: <span id="users" class="status">Loading...</span></p>
+            </div>
+        </div>
+    </div>
     <script>
-        // Create a new WebSocket connection
         const socket = new WebSocket('ws://localhost:13000');
 
-        // Event handler for when the connection is established
         socket.onopen = function (event) {
-            console.log('WebSocket is open now.'); // Log the connection status
-            // Send a message to the server
+            console.log('WebSocket is open now.');
+            document.getElementById('connections').textContent = 'Connected';
+            document.getElementById('sensors').textContent = 'Fetching sensors...';
+            document.getElementById('items').textContent = 'Fetching items...';
+            document.getElementById('fridges').textContent = 'Fetching fridges...';
+            document.getElementById('users').textContent = 'Fetching users...';
             const message = {
-                username : 'mrgreen',
-                pincode : 9235,
-                data : '<TYPE=ping;>Hola Receiver!<END>',
-            }
-		console.log('Sending message to server:', message);
+                username: 'mrgreen',
+                pincode: 9235,
+                data: '<TYPE=ping;>Hola Receiver!<END>',
+            };
+            console.log('Sending message to server:', message);
             socket.send(JSON.stringify(message));
         };
 
-        // Event handler for when a message is received from the server
         socket.onmessage = function (event) {
-            console.log('Message from server:', event.data); // Log the received message
+            console.log('Message from server:', event.data);
+            const data = JSON.parse(event.data);
+            if (data.connections) {
+                document.getElementById('connections').textContent = data.connections;
+            }
+            if (data.sensors) {
+                document.getElementById('sensors').textContent = data.sensors;
+            }
+            if (data.items) {
+                document.getElementById('items').textContent = data.items;
+            }
+            if (data.fridges) {
+                document.getElementById('fridges').textContent = data.fridges;
+            }
+            if (data.users) {
+                document.getElementById('users').textContent = data.users;
+            }
         };
 
-        // Event handler for when the connection is closed
         socket.onclose = function (event) {
-            console.log('WebSocket is closed now with event ', event); // Log the connection close status
+            console.log('WebSocket is closed now with event ', event);
         };
 
-        // Event handler for when there is an error with the WebSocket
         socket.onerror = function (event) {
-            console.error('WebSocket error:', event); // Log the error event
+            console.error('WebSocket error:', event);
         };
     </script>
 </body>

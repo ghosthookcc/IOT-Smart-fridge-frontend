@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items and Shopping Lists</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #0056b3;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 20px;
+            background: #f9f9f9;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 150px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1em;
+            color: #666;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .crud-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .crud-btn:hover {
+            background-color: #218838;
+        }
+        .crud-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .crud-form input {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .crud-form button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Items and Shopping Lists</h1>
+    </header>
+    <div class="container">
+        <div class="card">
+            <h2>Items List</h2>
+            <ul id="itemList">
+                <!-- Items will be dynamically loaded here -->
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Shopping Lists</h2>
+            <div id="shoppingListsContainer">
+                <form class="crud-form" id="createShoppingListForm">
+                    <input type="text" id="shoppingListName" placeholder="Enter Shopping List Name">
+                    <button type="button" onclick="createShoppingList()">Create Shopping List</button>
+                </form>
+                <ul id="shoppingList">
+                    <!-- Shopping lists will be dynamically loaded here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript Code Here -->
+    <script>
+        // Function to fetch items and populate the itemList
+        function fetchItems() {
+            // Example items fetched from server (replace with actual fetch request)
+            const items = [
+                { id: 1, name: 'Milk' },
+                { id: 2, name: 'Eggs' },
+                { id: 3, name: 'Bread' }
+            ];
+
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.name;
+                itemList.appendChild(li);
+            });
+        }
+
+        // Function to fetch shopping lists and populate the shoppingList
+        function fetchShoppingLists() {
+            // Example shopping lists fetched from server (replace with actual fetch request)
+            const shoppingLists = [
+                { id: 1, name: 'Weekly Groceries' },
+                { id: 2, name: 'Party Supplies' }
+            ];
+
+            const shoppingList = document.getElementById('shoppingList');
+            shoppingList.innerHTML = '';
+            shoppingLists.forEach(list => {
+                const li = document.createElement('li');
+                li.textContent = list.name;
+
+                // Add CRUD buttons to each list item
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Edit';
+                editBtn.classList.add('crud-btn');
+                editBtn.onclick = () => editShoppingList(list.id);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.classList.add('crud-btn');
+                deleteBtn.onclick = () => deleteShoppingList(list.id);
+
+                li.appendChild(editBtn);
+                li.appendChild(deleteBtn);
+                shoppingList.appendChild(li);
+            });
+        }
+
+        // Function to create a new shopping list
+        function createShoppingList() {
+            const name = document.getElementById('shoppingListName').value;
+            if (name) {
+                // Example create request (replace with actual create request)
+                console.log('Creating shopping list:', name);
+
+                // Refresh the shopping lists
+                fetchShoppingLists();
+            }
+        }
+
+        // Function to edit a shopping list
+        function editShoppingList(id) {
+            const newName = prompt('Enter new name for the shopping list:');
+            if (newName) {
+                // Example edit request (replace with actual edit request)
+                console.log('Editing shopping list with ID:', id, 'to new name:', newName);
+
+                // Refresh the shopping lists
+                fetchShoppingLists();
+            }
+        }
+
+        // Function to delete a shopping list
+        function deleteShoppingList(id) {
+            if (confirm('Are you sure you want to delete this shopping list?')) {
+                // Example delete request (replace with actual delete request)
+                console.log('Deleting shopping list with ID:', id);
+
+                // Refresh the shopping lists
+                fetchShoppingLists();
+            }
+        }
+
+        // Fetch items and shopping lists on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchItems();
+            fetchShoppingLists();
+        });
+    </script>
+</body>
+</html>
