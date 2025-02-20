@@ -146,6 +146,9 @@
 
         socket.onmessage = function (event) {
             console.log('Message from server:', event.data);
+
+            if (event.data == "pong") return;
+
             const data = JSON.parse(event.data);
             if (data.connections) {
                 document.getElementById('connections').textContent = data.connections;
