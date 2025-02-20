@@ -126,6 +126,8 @@
         </div>
     </div>
     <script>
+	window.onload = function ()
+	{
         const socket = new WebSocket('ws://localhost:13000');
 
         socket.onopen = function (event) {
@@ -174,6 +176,7 @@
         socket.onerror = function (event) {
             console.error('WebSocket error:', event);
         };
+	}
     </script>
 </body>
 </html>
