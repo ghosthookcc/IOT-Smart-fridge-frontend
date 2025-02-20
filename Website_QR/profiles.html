@@ -131,15 +131,70 @@
     </div>
 
     <div class="profiles-container">
-        <div class="profile-box">Profile 1</div>
+        <!--
+	<div class="profile-box">Profile 1</div>
         <div class="profile-box">Profile 2</div>
         <div class="profile-box">Profile 3</div>
         <button class="add-profile-btn">Add Profile</button>
+	-->
     </div>
 
     <script>
+	const APIBASEURL = "http://localhost:5000/"
+
+	const profilesContainer = document.querySelectorAll(".profiles-container")[0]
+
         // Cart object to store added items
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+	async function attemptLogin()
+	{
+		const url = APIBASEURL + "users/login";
+		try 
+		{
+		    const user = { username : "mrgreen", pincode : 9235 }
+		    const response = await fetch(url, { method : "POST", 
+			    				headers : {
+							    "Content-Type" : "application/json"
+			    				},
+		    					body : JSON.stringify(user) });
+		    const json = await response.json();	    
+	    	    console.log(json);
+
+		    if (json["login"] == "success")
+		    {
+		        window.location.href = "../index.html";
+		    }
+		}
+		catch (error)
+		{
+			console.error(error.message);
+		}
+	}
+
+	async function displayUsers() 
+	{
+		const url = APIBASEURL + "users";
+		try
+		{
+		    const response = await fetch(url);
+		    const json = await response.json();
+		    
+		    for (let idx = 0; idx < json.length; idx++)
+		    {
+		        const profileBoxElement = document.createElement("div");
+			profileBoxElement.classList.add("profile-box");
+			profileBoxElement.textContent = json[idx]["username"]
+		        profilesContainer.appendChild(profileBoxElement);
+
+			profileBoxElement.addEventListener("click", attemptLogin);
+		    }
+		}
+		catch (error)
+		{
+		    console.error(error.message);
+		}
+	}
 
         // Function to update cart display
         function updateCartDisplay() {
@@ -153,6 +208,7 @@
         // Update cart display on page load
         document.addEventListener('DOMContentLoaded', function() {
             updateCartDisplay();
+	    displayUsers();
         });
     </script>
 </body>
