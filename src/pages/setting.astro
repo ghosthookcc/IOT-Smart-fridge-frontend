@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout>
+  <section class="settings">
+    <h1>Fridge Settings</h1>
+
+    <label for="temp-range">Set Temperature: <span id="temp-value">5°C</span></label>
+    <input type="range" id="temp-range" min="0" max="10" value="5">
+
+    <h2>Alerts</h2>
+    <label>
+      <input type="checkbox" id="low-temp-alert"> Low Temperature Warning
+    </label>
+    <label>
+      <input type="checkbox" id="expiry-alert"> Expiration Notifications
+    </label>
+  </section>
+</Layout>

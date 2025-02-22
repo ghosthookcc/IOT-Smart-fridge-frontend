@@ -1,0 +1,85 @@
+<!-- src/components/Header.astro -->
+<header class="header">
+  <div class="logo">
+    <h1></h1>
+  </div>
+  <div class="cta">
+    <a href="#" class="cta-btn">Sign In</a>
+  </div>
+</header>
+
+<style>
+  /* General Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+  }
+
+  /* Header Styles */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background-color: #2C3E50;
+    color: white;
+  }
+
+  /* Logo Styling */
+  .logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  /* Call to Action Button */
+  .cta .cta-btn {
+    text-decoration: none;
+    background-color: #E74C3C;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .cta .cta-btn:hover {
+    background-color: #C0392B;
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .logo h1 {
+      font-size: 22px;
+    }
+
+    .cta .cta-btn {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo h1 {
+      font-size: 20px;
+    }
+
+    .cta .cta-btn {
+      font-size: 14px;
+      padding: 8px 14px;
+    }
+  }
+</style>

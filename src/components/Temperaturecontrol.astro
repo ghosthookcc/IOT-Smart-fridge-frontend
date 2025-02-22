@@ -1,0 +1,10 @@
+<div>
+  <label for="temp-range">Set Temperature: <span id="temp-value">5°C</span></label>
+  <input type="range" id="temp-range" min="0" max="10" value="5">
+</div>
+
+<script>
+document.getElementById("temp-range").addEventListener("input", (event) => {
+  document.getElementById("temp-value").innerText = event.target.value + "°C";
+});
+</script>

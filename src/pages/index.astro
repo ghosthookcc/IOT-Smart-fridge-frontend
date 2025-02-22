@@ -1,11 +1,217 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getFridgeStatus } from '../components/FridgeService.js';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidemenu.astro';
+import StatusCard from '../components/Statuscard.astro';
+
+const fridgeStatus = await getFridgeStatus();
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Fridge Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <Header />
+
+  <div class="main-container">
+    <Sidebar />
+
+    <main class="main-content">
+      <h2>Welcome to the Smart Fridge Dashboard</h2>
+      <p>Manage your shopping list, energy usage, and more!</p>
+
+      <div class="dashboard-layout">
+        <!-- Image Section taking up the left side (70% width) -->
+        <div class="image-container">
+          <img src="src/assets/fridge.webp" alt="Smart Fridge Image" class="fridge-image" />
+        </div>
+
+        <!-- Status Card displaying fridge status (30% width) -->
+        <div class="status-card-container">
+          <StatusCard 
+            temperature={fridgeStatus.temperature} 
+            energyConsumption={fridgeStatus.energyConsumption} 
+            doorStatus={fridgeStatus.doorStatus} 
+          />
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
+
+<style>
+  /* General Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ecf0f1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* Header Styling */
+  header {
+    background-color: #2C3E50;
+    padding: 15px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+
+  .header h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  /* Sidebar Styling */
+  .sidebar {
+    width: 250px;
+    background-color: #34495e;
+    padding: 20px;
+    height: 100vh; /* Full height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  .menu {
+    list-style: none;
+    padding: 0;
+  }
+
+  .menu li {
+    margin: 15px 0;
+  }
+
+  .menu a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .menu a:hover {
+    background-color: #E74C3C;
+    color: white;
+  }
+
+  /* Main Content Styling */
+  .main-container {
+    display: flex;
+    margin-left: 250px; /* Adjusting space for sidebar */
+    padding: 0;
+    height: 100vh;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #ffffff;
+  }
+
+  .dashboard-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  .status-card-container {
+    width: 30%; /* Status card takes 30% of width */
+    margin-left: 20px;
+  }
+
+  .image-container {
+    width: 70%; /* Image takes remaining 70% of the width */
+    height: 100%;
+  }
+
+  .fridge-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .main-content h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .main-content p {
+    font-size: 16px;
+    color: #7f8c8d;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 220px;
+    }
+
+    .main-container {
+      margin-left: 220px; /* Adjust space for sidebar */
+    }
+
+    .main-content {
+      margin-left: 0; /* No left margin */
+    }
+
+    .status-card-container {
+      width: 100%; /* Status card takes full width on small screens */
+      margin-left: 0;
+    }
+
+    .image-container {
+      display: none; /* Hide image on small screens */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sidebar {
+      width: 200px;
+    }
+
+    .main-container {
+      margin-left: 200px; /* Adjust space for sidebar */
+    }
+
+    .main-content {
+      margin-left: 0;
+    }
+
+    header {
+      padding: 10px 15px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+    }
+  }
+</style>

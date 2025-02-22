@@ -1,0 +1,94 @@
+<aside class="sidebar">
+  <ul class="menu">
+    <li><a href="/">Dashboard</a></li>
+    <li><a href="/shopping">Shopping List</a></li>
+    <li><a href="/energy">Energy Usage</a></li>
+  </ul>
+</aside>
+
+<style>
+  /* General Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+
+  /* Sidebar Styling */
+  .sidebar {
+    width: 250px;
+    background-color: #34495e;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Menu List */
+  .menu {
+    list-style: none;
+    padding: 0;
+  }
+
+  .menu li {
+    margin: 20px 0;
+  }
+
+  /* Links Styling */
+  .menu a {
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 18px;
+    font-weight: 500;
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Hover Effects */
+  .menu a:hover {
+    background-color: #e74c3c;
+    color: white;
+  }
+
+  /* Active Link Styling */
+  .menu a.active {
+    background-color: #2980b9;
+    color: white;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 220px;
+      padding: 15px;
+    }
+
+    .menu a {
+      font-size: 16px;
+      padding: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sidebar {
+      width: 200px;
+      padding: 10px;
+    }
+
+    .menu a {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+</style>
